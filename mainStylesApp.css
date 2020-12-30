@@ -54,10 +54,6 @@ header {
 .days li:hover {
     font-size: 22px;
     transition: 0.2s;
-}
-
-.days a {
-    text-decoration: none;
     color: rgb(214, 220, 243);
 }
 
@@ -69,6 +65,13 @@ header {
 .sidebar {
     align-items: stretch;
     width: 300px;
+}
+
+.buttonForm {
+    border: 1px solid rgb(214, 220, 243);
+    padding: 5px;
+    color: rgb(214, 220, 243);
+    text-decoration: none;
 }
 
 .content {
