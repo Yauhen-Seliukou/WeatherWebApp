@@ -9,42 +9,78 @@
 
     <body>
         <header>
-            <h1>Weather App</h1>
+            <h1 class="openSidebar">Weather App</h1>
 
             <ul class="days">
-                <li id="now">Сейчас</li>
-                <li id="today">Сегодня</li>
+                <li id="today" class="active">Сегодня</li>
                 <li id="tomorrow">Завтра</li>
-                <li id="week">7 дней</li>
+                <li id="week">5 дней</li>
             </ul>
         </header>
 
         <section class="main">
             <div class="sidebar">
-                <form name="paramsWeather" action="#">
-                    <label>Введите название своего города <input class="cityName"type="text" value="Minsk"></label>
-                    <br><br><a href="#" class="buttonForm" onclick="return false">Применить</a>
+                <form class="paramsWeather" action="#">
+                    <fieldset>
+                        <legend>Найти погоду</legend>
+                        <select name="choice" class="choice">
+                            <option value="city" selected>По городу</option>
+                            <option value="coords">По координатам</option>
+                            <option value="zip">По индексу</option>
+                        </select>
+                        <input name="cityName" class="cityName" type="text" placeholder="Город">
+                        <div class="latAndLon">
+                            <input name="lat" class="lat" type="number" placeholder="Широта">
+                            <input name="lon" class="lon" type="number" placeholder="Долгота">
+                        </div>
+                        <div class="zip">
+                            <input name="country" class="country" type="text" placeholder="Страна (US)">
+                            <input name="zipCode" class="zipCode" type="number" placeholder="Индекс">
+                        </div>
+                        
+                        <div class="paramsSearch"> Дополнительно отобразить:
+                            <label class="humidity"><input type="checkbox"> Влажность</label>
+                            <label class="wind"><input type="checkbox"> Скорость ветра</label>
+                        </div>
+                        <a href="#" class="buttonForm" onclick="return false">Применить</a>
+                    </fieldset>
                 </form>
             </div>
 
             <div class="content">
-                <div class="weather">
+                <!--<div class="forOneDay">
                     <h2 class="weatherTitle"></h2>
-                    <div class="Date">
-                        <p class="weatherDate"></p>
-                        <p class="weatherDay"></p>
-                        <p class="weatherIcon"></p>
-                        <p class="weatherForecast"></p>
-                        <p class="weatherDesc"></p>
+                    <div class="container">
+                        <div class="weather">
+                            <p class="weatherTime"></p>
+                            <p class="weatherForecast"></p>
+                            <p class="weatherIcon"></p>
+                            <div class="weatherInfo">
+                                <p class="weatherDesc"></p>
+                                <p class="weatherHumidity"></p>
+                                <p class="weatherWind"></p>
+                            </div>
                     </div>
-                    <p class="weatherHumidity">Влажность: </p>
-                    <p class="weatherWind">Ветер: км/ч</p>
-                </div>
+                </div> -->
             </div>
+            <template id="itemWeather">
+                <div class="weather">
+                    <p class="weatherTime"></p>
+                    <p class="weatherForecast"></p>
+                    <p class="weatherIcon"></p>
+                    <div class="weatherInfo">
+                        <p class="weatherDesc"></p>
+                        <p class="weatherHumidity"></p>
+                        <p class="weatherWind"></p>
+                    </div>
+                </div>
+            </template>
         </section>
 
         <footer>
-            About us
+            <p>Данные предоставлены<br> 
+                сервисом <a href="https://openweathermap.org/api">openweathermap.org/api</a>
+            </p>
         </footer>
         
     </body>

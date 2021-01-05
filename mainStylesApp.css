@@ -14,21 +14,26 @@ body {
     width: 100%;
     margin: 0 auto;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    background: rgb(247, 248, 252);
+    font-size: 16px;
     box-sizing: border-box;
+    
 }
 
-header, footer, .sidebar {
-    background: #1b2b40;
-    color: rgb(214, 220, 243);
+header, footer {
+    background: rgb(247, 248, 252);
 }
 
 header {
     padding: 20px 5px 5px 20px;
-    border-bottom: 2px solid #304663;
     position: relative;
-    height: 70px;
+    min-height: 70px;
     box-sizing: border-box;
+    border-bottom: 1px solid rgba(45, 48, 47, 0.11);
+}
+
+.openSidebar {
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .days {
@@ -49,39 +54,168 @@ header {
     box-sizing: border-box;
     cursor: pointer;
     transition: 0.2s;
+    border-right: 1px solid rgba(45, 46, 48, 0.11);
+    border-radius: 10px;
 }
+
+
 
 .days li:hover {
     font-size: 22px;
     transition: 0.2s;
-    color: rgb(214, 220, 243);
+    background-color: rgb(235, 238, 250);
+}
+
+.active {
+    font-size: 22px;
+    transition: 0.2s;
+    background-color: rgb(235, 238, 250);
 }
 
 .main {
     flex-grow: 1;
     display: flex;
+    width: 1020px;
+    margin: 0 auto;
 }
 
 .sidebar {
     align-items: stretch;
-    width: 300px;
+    padding: 10px;
+    /*border-right: 1px solid rgba(45, 48, 47, 0.233);*/
+    /*background-color: rgb(228, 244, 255);*/
+}
+
+.paramsWeather {
+    margin-top: 20px;
+    width: 240px;
+}
+
+fieldset {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(45, 48, 47, 0.233);
+}
+
+.cityName, .choice {
+    border: 1px solid rgba(45, 48, 47, 0.233);
+    border-radius: 5px;
+    padding: 5px;
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cityName:focus, .lat:focus, .lon:focus, .zipCode:focus, .country:focus, .choice:focus {
+    outline: none;
+    background-color: rgb(247, 248, 252);
+}
+
+.error {
+    border: 1px solid rgb(235, 9, 9);
+}
+
+.lat, .lon, .zipCode, .country {
+    border: 1px solid rgba(45, 48, 47, 0.233);
+    border-radius: 5px;
+    padding: 5px;
+    width: 49%;
+    box-sizing: border-box;
+}
+
+.latAndLon, .zip {
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.paramsSearch, .humidity, .wind, .latAndLon, .zip {
+    display: block;
+}
+
+.paramsSearch {
+    margin-top: 10px;
+}
+
+.humidity, .wind {
+    margin-left: 20px;
+}
+
+.humidity {
+    margin-top: 10px;
+}
+
+.wind {
+    margin-bottom: 20px;
 }
 
 .buttonForm {
-    border: 1px solid rgb(214, 220, 243);
+    display: inline-block;
+    border: 1px solid rgba(45, 48, 47, 0.233);
     padding: 5px;
-    color: rgb(214, 220, 243);
     text-decoration: none;
+    color: royalblue;
+    border-radius: 5px;
+    background-color: rgba(231, 248, 233, 0.616);
+    margin: 0 auto;
+}
+
+.buttonForm:hover {
+    background-color: rgba(198, 250, 205, 0.616);
 }
 
 .content {
     flex-grow: 1;
     align-items: stretch;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.weather {
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid rgba(45, 46, 48, 0.11);
+    border-radius: 10px;
+    width: 240px;
+    background-color: rgb(225, 229, 245);
+    position: relative;
+}
+
+.weatherTitle {
+    padding: 10px;
+}
+
+.weatherInfo {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5px;
+    background-color: rgb(228, 244, 255);
+}
+
+.weatherTime {
+    font-size: 1.5em;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.weatherForecast {
+    font-size: 2em;
+    position: absolute;
+    top: 60px;
+    right: 5px;
 }
 
 footer {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 5px;
-    border-top: 2px solid #304663;
+    border-top: 1px solid rgba(45, 48, 47, 0.233);
+    font-size: 0.8em;
 }
