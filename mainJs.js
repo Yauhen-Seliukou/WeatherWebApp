@@ -22,6 +22,12 @@ getWeatherDate(url, new Date(Date.now()));
 
 function getWeatherDate(url, day){
     fetch(url)
+      .then(function (response) {
+        if (response.status !== 200) {
+          return Promise.reject(new Error(response.statusText))
+        }
+        return Promise.resolve(response)
+      })
       .then(function (resp) {return resp.json() })
       .then(function (data) {
         let forOneDayDiv = document.createElement('div');
@@ -66,11 +72,6 @@ function getWeatherDate(url, day){
     })
       .catch(function (e) {
         //if (e.name == 'TypeError') {
-            url = 'http://api.openweathermap.org/data/2.5/forecast?q=Minsk' + 
-                  '&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184';
-                  console.log(url);
-            choiceDays();
-
             switch (document.forms[0].choice.value) {
                 case 'city':
                     document.forms[0].cityName.classList.add('error');
@@ -84,7 +85,9 @@ function getWeatherDate(url, day){
                     document.forms[0].zipCode.classList.add('error');
                     break;
             }
-            
+            url = 'http://api.openweathermap.org/data/2.5/forecast?q=Minsk' + 
+                  '&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184';
+            choiceDays(url);
             //alert('Введены некорректные данные.');
         /*} else {
             throw e;
@@ -92,7 +95,7 @@ function getWeatherDate(url, day){
       });
 }
 
-function choiceDays() {
+function choiceDays(url) {
     let dateNow = new Date(Date.now());
     switch (target.id) {
         case 'today':
@@ -123,16 +126,11 @@ document.querySelector('.days').addEventListener('click', function(event){
         li.classList = '';
     }
     target.classList.add('active');
-    choiceDays();
+    choiceDays(url);
 })
 
 document.querySelector('.buttonForm').addEventListener('click', function(event) {
     let formParams = document.forms[0];
-    formParams.cityName.classList.remove('error');
-    formParams.lat.classList.remove('error');
-    formParams.lon.classList.remove('error');
-    formParams.country.classList.remove('error');
-    formParams.zipCode.classList.remove('error');
     cityName = formParams.cityName.value;
     humidity = document.querySelector('.humidity').querySelector('input').checked;
     wind = document.querySelector('.wind').querySelector('input').checked;
@@ -150,13 +148,14 @@ document.querySelector('.buttonForm').addEventListener('click', function(event) 
                   '&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184';
             break;
         case 'zip':
+            if (document.forms[0].country.value === '') document.forms[0].country.value = 'us';
             url = 'http://api.openweathermap.org/data/2.5/forecast?zip='
                   + document.forms[0].zipCode.value + ','
                   + document.forms[0].country.value +
                   '&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184';
             break;
     }
-    choiceDays();
+    choiceDays(url);
 })
 
 document.querySelector('.openSidebar').addEventListener('click', function() {
@@ -189,3 +188,15 @@ document.forms[0].choice.addEventListener('click', function(event) {
             break;
     }
 })
+
+document.forms[0].cityName.oninput = function() {
+    document.forms[0].cityName.classList.remove('error');
+}
+document.forms[0].lat.oninput = document.forms[0].lon.oninput = function() {
+    document.forms[0].lat.classList.remove('error');
+    document.forms[0].lon.classList.remove('error');
+}
+document.forms[0].country.oninput = document.forms[0].zipCode.oninput = function() {
+    document.forms[0].country.classList.remove('error');
+    document.forms[0].zipCode.classList.remove('error');
+}

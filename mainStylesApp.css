@@ -75,7 +75,7 @@ header {
 .main {
     flex-grow: 1;
     display: flex;
-    width: 1020px;
+    max-width: 1020px;
     margin: 0 auto;
 }
 
@@ -112,10 +112,6 @@ fieldset {
     background-color: rgb(247, 248, 252);
 }
 
-.error {
-    border: 1px solid rgb(235, 9, 9);
-}
-
 .lat, .lon, .zipCode, .country {
     border: 1px solid rgba(45, 48, 47, 0.233);
     border-radius: 5px;
@@ -148,6 +144,10 @@ fieldset {
 
 .wind {
     margin-bottom: 20px;
+}
+
+.error {
+    border: 1px solid rgb(235, 9, 9);
 }
 
 .buttonForm {
