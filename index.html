@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
+        <title>Прогноз погоды</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="mainStylesApp.css">
-        <title>Application for the weather</title>
-        <script src="mainJs.js" defer></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css">
+        <script src="main.js" defer></script>
     </head>
 
     <body>
         <header>
-            <h1 class="openSidebar">Weather App</h1>
-
+            <div class="icon-mobile-menu"></div>
+            <h1 class="header-title">Weather-app</h1>
             <ul class="days">
                 <li id="today">Сегодня</li>
                 <li id="tomorrow">Завтра</li>
@@ -18,9 +19,9 @@
             </ul>
         </header>
 
-        <section class="main">
+        <main>
             <div class="sidebar">
-                <form class="paramsWeather" action="#">
+                <form name="params-weather" class="params-weather" action="#">
                     <fieldset>
                         <legend>Найти погоду</legend>
                         <select name="choice" class="choice">
@@ -28,54 +29,43 @@
                             <option value="coords">По координатам</option>
                             <option value="zip">По индексу</option>
                         </select>
-                        <input name="cityName" class="cityName" type="text" placeholder="Город">
-                        <div class="latAndLon">
+                        <input name="city-name" class="city-name" type="text" placeholder="Город">
+                        <div class="coordinates">
                             <input name="lat" class="lat" type="number" placeholder="Широта">
                             <input name="lon" class="lon" type="number" placeholder="Долгота">
                         </div>
                         <div class="zip">
                             <input name="country" class="country" type="text" placeholder="Страна (US)">
-                            <input name="zipCode" class="zipCode" type="number" placeholder="Индекс">
+                            <input name="zip-code" class="zip-code" type="number" placeholder="Индекс">
                         </div>
                         
-                        <div class="paramsSearch"> Дополнительно отобразить:
+                        <div class="extra-params"> Дополнительно отобразить:
                             <label class="humidity"><input name="humidity" type="checkbox"> Влажность</label>
                             <label class="wind"><input name="wind" type="checkbox"> Скорость ветра</label>
                         </div>
-                        <a href="#" class="buttonForm" onclick="return false">Применить</a>
+                        <button class="button-form">Применить</button>
                     </fieldset>
                 </form>
             </div>
 
             <div class="content">
-                <!--<div class="forOneDay">
-                    <h2 class="weatherTitle"></h2>
+                <!--<div class="one-day">
+                    <h2 class="weather-title"></h2>
                     <div class="container">
                         <div class="weather">
-                            <p class="weatherTime"></p>
-                            <p class="weatherForecast"></p>
-                            <p class="weatherIcon"></p>
-                            <div class="weatherInfo">
-                                <p class="weatherDesc"></p>
-                                <p class="weatherHumidity"></p>
-                                <p class="weatherWind"></p>
+                            <p class="weather-time"></p>
+                            <p class="weather-forecast"></p>
+                            <p class="weather-icon"></p>
+                            <div class="weather-info">
+                                <p class="weather-desc"></p>
+                                <p class="weather-humidity"></p>
+                                <p class="weather-wind"></p>
                             </div>
+                        </div>
                     </div>
                 </div> -->
             </div>
-            <template id="itemWeather">
-                <div class="weather">
-                    <p class="weatherTime"></p>
-                    <p class="weatherForecast"></p>
-                    <p class="weatherIcon"></p>
-                    <div class="weatherInfo">
-                        <p class="weatherDesc"></p>
-                        <p class="weatherHumidity"></p>
-                        <p class="weatherWind"></p>
-                    </div>
-                </div>
-            </template>
-        </section>
+        </main>
 
         <footer>
             <p>Данные предоставлены<br> 
