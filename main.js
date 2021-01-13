@@ -1,132 +1,109 @@
-const paramsWeather = {
-    city: document.getElementsByName('city-name')[0],
-    lat: document.getElementsByName('lat')[0],
-    lon: document.getElementsByName('lon')[0],
-    country: document.getElementsByName('country')[0],
-    zipCode: document.getElementsByName('zip-code')[0],
-    humidity: document.getElementsByName('humidity')[0],
-    wind: document.getElementsByName('wind')[0],
-    selectParams: document.getElementsByName('choice')[0],
-    days: document.querySelector('.days').querySelector('li'),
-}
 
-paramsWeather.getUrl = function() {
-    switch (this.selectParams.value) {
-        case 'city': 
-            return (`http://api.openweathermap.org/data/2.5/forecast?q=${this.city.value}&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184`);
-        case 'coords': 
-            return (`http://api.openweathermap.org/data/2.5/forecast?lat=${this.lat.value}&lon=${this.lon.value}&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184`);
-        case 'zip': 
-            return (`http://api.openweathermap.org/data/2.5/forecast?zip=${this.zipCode.value},${this.country.value}&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184`);
-    }
-}
-
-initialDataRecording(JSON.parse(localStorage.getItem('dataForm')), paramsWeather);
+initialDataRecording(JSON.parse(localStorage.getItem('dataForm')));
 
 document.querySelector('.days').addEventListener('click', function(event){
     if (event.target.tagName != 'LI') return;
     
-    paramsWeather.days = event.target;
-    const days = document.querySelector('.days').querySelectorAll('li');
-    Array.from(days).map(li => li.classList.remove('active'));
-    paramsWeather.days.classList.add('active');
-    showWeather(paramsWeather.getUrl());
-})
+    let days = document.querySelector('.days .active');
+    days.classList.remove('active');
+    days = event.target;
+    days.classList.add('active');
+    
+    showWeather(getUrl());
+});
 
-document.querySelector('.button-form').addEventListener('click', function(event) {
-    showWeather(paramsWeather.getUrl());
-})
+document.querySelector('.button-submit-weather-params').addEventListener('submit', () => showWeather(getUrl()));
 
 document.querySelector('.header-title').addEventListener('click', function() {
     const sidebar = document.querySelector('.sidebar');
+    /*if (sidebar.classList.contains('open-sidebar')) {
+        removeClass('open-sidebar', sidebar);
+        addClass('close-sidebar', sidebar);
+    } else {
+        removeClass('close-sidebar', sidebar);
+        addClass('open-sidebar', sidebar)
+    }*/
     sidebar.hidden = !sidebar.hidden;
-})
+});
 
-paramsWeather.selectParams.addEventListener('click', function() {
-    switch (paramsWeather.selectParams.value) {
-        case 'city':
-            addClass('hidden', paramsWeather.lat, paramsWeather.lon, paramsWeather.country, paramsWeather.zipCode);
-            removeClass('hidden', paramsWeather.city);
-            break;
-        case 'coords':
-            addClass('hidden', paramsWeather.city, paramsWeather.country, paramsWeather.zipCode);
-            removeClass('hidden', paramsWeather.lat, paramsWeather.lon);
-            break;
-        case 'zip':
-            addClass('hidden', paramsWeather.lat, paramsWeather.lon, paramsWeather.city);
-            removeClass('hidden', paramsWeather.country, paramsWeather.zipCode);
-            break;
-    }
-})
+document.querySelector('.select-weather-param').addEventListener('change', () => showParamsWeatherBySelect());
 
-paramsWeather.city.oninput = function() {
-    removeClass('error', paramsWeather.city);
-}
-paramsWeather.lat.oninput = paramsWeather.lon.oninput = function() {
-    removeClass('error', paramsWeather.lat, paramsWeather.lon);
-}
-paramsWeather.country.oninput = paramsWeather.zipCode.oninput = function() {
-    removeClass('error', paramsWeather.country, paramsWeather.zipCode);
-}
+document.querySelector('.city-name').oninput = function() {
+    const city = document.querySelector('.city-name');
+    removeClass('error', city);
+};
+
+document.querySelector('.lat').oninput = document.querySelector('.lon').oninput = function() {
+    const {lat, lon} = document.forms['weather-params'];
+    removeClass('error', lat, lon);
+};
+
+document.querySelector('.country').oninput = document.querySelector('.zip-code').oninput = function() {
+    const {country, 'zip-code': zipCode} = document.forms['weather-params'];
+    removeClass('error', country, zipCode);
+};
 
 window.addEventListener('beforeunload', function() {
-    localStorage.setItem('dataForm', JSON.stringify(returnDataForm(paramsWeather)));
-})
+    localStorage.setItem('dataForm', JSON.stringify(returnDataForm()));
+});
 
-function initialDataRecording(localData, objData) {
+function initialDataRecording(localData) {
+    let days;
+    const {'city-name': city, lat, lon, country, 
+           'zip-code': zipCode, 'select-weather-param': selectParams,
+            humidity, wind} = document.forms['weather-params'];
+
     if (localData) {
-        localData.cityVisible ? objData.city.classList.add('hidden') : '';
-        localData.latVisible ? objData.lat.classList.add('hidden') : '';
-        localData.lonVisible ? objData.lon.classList.add('hidden') : '';
-        localData.countryVisible ? objData.country.classList.add('hidden') : '';
-        localData.zipCodeVisible ? objData.zipCode.classList.add('hidden') : '';
-    
-        objData.city.value = (localData.city); 
-        objData.selectParams.value = localData.selectParams;
-        objData.lat.value = localData.lat;
-        objData.lon.value = localData.lon;
-        objData.country.value = localData.country;
-        objData.zipCode.value = localData.zipCode;
-        objData.humidity.checked = localData.humidity;
-        objData.wind.checked = localData.wind;
-        objData.days = document.querySelector('.days').querySelector(`#${localData.days}`);
+        switch (localData.selectParams) {
+            case 'city':
+                city.value = localData.city;
+                break;
+            case 'coords':
+                lat.value = localData.lat;
+                lon.value = localData.lon;
+                break;
+            case 'zip':
+                country.value = localData.country;
+                zipCode.value = localData.zipCode;
+                break;
+        }
+        selectParams.value = localData.selectParams;
+        humidity.checked = localData.humidity;
+        wind.checked = localData.wind;
+        days = document.querySelector(`.days #${localData.days}`);
     } else {
-        objData.city.value = 'Минск';
-        objData.selectParams.value = 'city';
-        objData.lat.classList.add('hidden');
-        objData.lon.classList.add('hidden');
-        objData.country.classList.add('hidden');
-        objData.zipCode.classList.add('hidden');
+        document.forms['weather-params']['city-name'].value = 'Минск';
+        document.forms['weather-params']['select-weather-param'].value = 'city';
+        days = document.querySelector('.days li');
     }
+
+    showParamsWeatherBySelect()
     
-    objData.days.classList.add('active');
+    days.classList.add('active');
 
-    showWeather(paramsWeather.getUrl());
-}
+    showWeather(getUrl());
+};
 
-function returnDataForm(objData) {
+function returnDataForm() {
+    const {'city-name': city, lat, lon, country, 
+           'zip-code': zipCode, 'select-weather-param': selectParams,
+            humidity, wind} = document.forms['weather-params'];
     const dataForm = {
-        city: objData.city.value,
-        lat: objData.lat.value,
-        lon: objData.lon.value,
-        country: objData.country.value,
-        zipCode: objData.zipCode.value,
+        city: city.value,
+        lat: lat.value,
+        lon: lon.value,
+        country: country.value,
+        zipCode: zipCode.value,
+        selectParams: selectParams.value,
         
-        cityVisible: objData.city.classList.contains('hidden'),
-        latVisible: objData.lat.classList.contains('hidden'),
-        lonVisible: objData.lon.classList.contains('hidden'),
-        countryVisible: objData.country.classList.contains('hidden'),
-        zipCodeVisible: objData.zipCode.classList.contains('hidden'),
-        
-        humidity: objData.humidity.checked,
-        wind: objData.wind.checked,
-        selectParams: objData.selectParams.value,
-        days: objData.days.getAttribute('id')
+        humidity: humidity.checked,
+        wind: wind.checked,
+        days: document.querySelector('.days .active').id
     }
     return dataForm;
-}
+};
 
-function createHTMLByParameters(serverData, dateWeather) {
+function createHtmlContentForOneDay(responseData, dateWeather) {
     const options = { 
         weekday: 'long',
         year: 'numeric',
@@ -135,101 +112,121 @@ function createHTMLByParameters(serverData, dateWeather) {
     };
     const formatDate = new Intl.DateTimeFormat('ru', options).format(dateWeather);
 
-    let stringCode = '';
-    stringCode +=  `<h2 class="weather-title">${serverData.city.name}: ${formatDate}</h2>`;
-    stringCode += `<div class="container">`;
-
-    for (const oneDayData of serverData.list) {
+    const {humidity, wind} = document.forms['weather-params'];
+    
+    const html = responseData.list.reduce((text, oneDayData) => {
         const time = oneDayData.dt_txt.split(' ')[1].split(':');
         const date = new Date(oneDayData.dt_txt.split(' ')[0].split('-').join(','));
         
-        if (dateWeather.getDate() !== date.getDate()) continue;
-        if (time[0] < '09') continue;
+        if (dateWeather.getDate() == date.getDate() && time[0] >= '09') {
+            text +=
+                `<div class="weather-item">
+                    <p class="weather-time">${time[0]}:${time[1]}</p>
+                    <p class="weather-forecast">${Math.round(oneDayData.main.temp - 273) + '&deg;'}</p>
+                    <p class="weather-icon"><img src="https://openweathermap.org/img/wn/${oneDayData.weather[0]['icon']}@2x.png"></p>
+                    <div class="weather-info">
+                        <p class="weather-desc">На улице ${oneDayData.weather[0]['description']}</p>
+                        <p class="weather-humidity">${humidity.checked ? `Влажность ${oneDayData.main.humidity}%` : ''}</p>
+                        <p class="weather-wind">${wind.checked ? `Ветер: ${oneDayData.wind.speed} км/ч` : ''}</p>
+                    </div>
+                </div>`;
+        }
+        return text;
+    }, '');
 
-        stringCode += `<div class="weather">`;
-        stringCode += `<p class="weather-time">${time[0]}:${time[1]}</p>`;
-        stringCode += `<p class="weather-forecast">${Math.round(oneDayData.main.temp - 273) + '&deg;'}</p>`;
-        stringCode += `<p class="weather-icon"><img src="https://openweathermap.org/img/wn/${oneDayData.weather[0]['icon']}@2x.png"></p>`;
-        stringCode += `<div class="weather-info">`;
-        stringCode += `<p class="weather-desc">На улице ${oneDayData.weather[0]['description']}</p>`;
-        stringCode += `<p class="weather-humidity">Влажность ${oneDayData.main.humidity} %</p>`;
-        stringCode += `<p class="weather-wind">Ветер ${oneDayData.wind.speed} км/ч</p>`;
-        stringCode += `</div></div>`;
-    }
-    stringCode += `</div>`
-    return stringCode;
-}
+    return `<div class="one-day">
+            <h2 class="weather-title">${responseData.city.name}: ${formatDate}</h2>
+            <div class="weather-container">${html}</div></div>`;
+};
 
-function addInfoInApp(html) {
-    const div = document.createElement('div');
-    div.classList.add('one-day');
-    div.innerHTML = html;
-    if (paramsWeather.humidity.checked) {
-        Array.from(div.querySelectorAll('.weather-humidity')).map(item => item.classList.remove('hidden'));
-    } else {
-        Array.from(div.querySelectorAll('.weather-humidity')).map(item => item.classList.add('hidden'));
-    }
-    if (paramsWeather.wind.checked) {
-        Array.from(div.querySelectorAll('.weather-wind')).map(item => item.classList.remove('hidden'));
-    } else {
-        Array.from(div.querySelectorAll('.weather-wind')).map(item => item.classList.add('hidden'));
-    }
-            
-    document.querySelector('.content').append(div);
-}
-
-function getWeatherDate(url, day, numberOfDays){
+function addInfoInApp(url, dateWeather, numberOfDays){
     fetch(url).then(function(resp) {
         return resp.json() 
     })
     .then(function(data) {
+        let html = ''
         for (let i = 0; i < numberOfDays; i++) {
-            const currentDate = new Date(day.getFullYear(), day.getMonth(), day.getDate() + i);
-            const html = createHTMLByParameters(data, currentDate);
-            addInfoInApp(html);
+            const currentDate = new Date(dateWeather.getFullYear(), dateWeather.getMonth(), dateWeather.getDate() + i);
+            html += createHtmlContentForOneDay(data, currentDate);
         }
+        document.querySelector('.content').innerHTML = html;
     })
     .catch(function (e) {
         console.log(e);
-        switch (paramsWeather.selectParams.value) {
+        const {'city-name': city, lat, lon, country, 
+               'zip-code': zipCode, 'select-weather-param': selectParams,
+                humidity, wind} = document.forms['weather-params'];
+
+        switch (selectParams.value) {
             case 'city':
-                addClass('error', paramsWeather.city);
+                addClass('error', city);
                 break;
             case 'coords':
-                addClass('error', paramsWeather.lat, paramsWeather.lon);
+                addClass('error', lat, lon);
                 break;
             case 'zip':
-                addClass('error', paramsWeather.country, paramsWeather.zipCode);
+                addClass('error', country, zipCode);
                 break;
         }
-        const url = 'http://api.openweathermap.org/data/2.5/forecast?q=Minsk&lang=ru&appid=3bca9c3f828ed0b6bfbbfe2affb63184';
-        showWeather(url);
+        document.querySelector('.content').innerHTML = 
+            `<div class="error-data">Данных по Вашему запросу не найдено, проверьте правильность введенных данных.</div>`;
     });
-}
+};
 
 function showWeather(url) {
     const dateNow = new Date();
-    switch (paramsWeather.days.id) {
+    switch (document.querySelector('.days .active').id) {
         case 'today':
-            document.querySelector('.content').innerHTML = '';
-            getWeatherDate(url, dateNow, 1);
+            addInfoInApp(url, dateNow, 1); 
             break;
         case 'tomorrow':
-            document.querySelector('.content').innerHTML = '';
-            let dateTommorow = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate() + 1);
-            getWeatherDate(url, dateTommorow, 1);
+            const dateTommorow = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate() + 1);
+            addInfoInApp(url, dateTommorow, 1);
             break;
         case 'week':
-            document.querySelector('.content').innerHTML = '';
-            getWeatherDate(url, dateNow, 5);
+            addInfoInApp(url, dateNow, 5);
             break;
     }
-}
+};
+
+function getUrl() {
+    const {'city-name': city, lat, lon, country, 
+           'zip-code': zipCode, 'select-weather-param': selectParams} = document.forms['weather-params'];
+
+    switch (selectParams.value) {
+        case 'city': 
+            return (`http://api.openweathermap.org/data/2.5/forecast?q=${city.value}&lang=ru&appid=80fceb75a14d5106f197a58ff38572dc`);
+        case 'coords': 
+            return (`http://api.openweathermap.org/data/2.5/forecast?lat=${lat.value}&lon=${lon.value}&lang=ru&appid=80fceb75a14d5106f197a58ff38572dc`);
+        case 'zip': 
+            return (`http://api.openweathermap.org/data/2.5/forecast?zip=${zipCode.value},${country.value}&lang=ru&appid=80fceb75a14d5106f197a58ff38572dc`);
+    }
+};
 
 function addClass(name, ...elems) {
     elems.map((elem) => elem.classList.add(name));
-}
+};
 
 function removeClass(name, ...elems){
     elems.map((elem) => elem.classList.remove(name));
+};
+
+function showParamsWeatherBySelect() {
+    const {'city-name': city, lat, lon, country, 
+           'zip-code': zipCode, 'select-weather-param': selectParams} = document.forms['weather-params'];
+
+    switch (selectParams.value) {
+        case 'city':
+            addClass('hidden', lat, lon, country, zipCode);
+            removeClass('hidden', city);
+            break;
+        case 'coords':
+            addClass('hidden', city, country, zipCode);
+            removeClass('hidden', lat, lon);
+            break;
+        case 'zip':
+            addClass('hidden', lat, lon, city);
+            removeClass('hidden', country, zipCode);
+            break;
+    }
 }

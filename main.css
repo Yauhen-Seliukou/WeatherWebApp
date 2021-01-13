@@ -19,9 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
-    margin: 0 auto;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'monospace', 'Times New Roman', Times, serif;
     font-size: 16px;
     
 }
@@ -32,13 +30,14 @@ footer {
 }
 
 header {
-    position: relative;
+    display: flex;
     height: 70px;
     border-bottom: 1px solid var(--main-border-color);
+    padding: 0 20px;
 }
 
 .header-title {
-    margin-left: 20px;
+    display: inline-block;
     line-height: 70px;
     vertical-align: middle;
     cursor: pointer;
@@ -46,11 +45,8 @@ header {
 
 .days {
     display: flex;
-    position: absolute;
-    top: 0;
-    left: 300px;
-    height: inherit;
     line-height: 70px;
+    padding: 0 20px;
 }
 
 .days li {
@@ -61,13 +57,9 @@ header {
     font-size: 1.3em;
     cursor: pointer;
     border-right: 1px solid var(--main-border-color);
-    border-radius: 10px;
 }
 
-.days li:hover {
-    background-color: var(--main-button-hover-color);
-}
-
+.days li:hover,
 .active {
     background-color: var(--main-weather-color);
 }
@@ -75,34 +67,38 @@ header {
 main {
     display: flex;
     flex-grow: 1;
-    max-width: 1020px;
+    width: 1200px;
     margin: 0 auto;
 }
 
 .sidebar {
-    align-items: stretch;
-    padding: 10px;
-}
-
-.params-weather {
-    margin-top: 20px;
+    padding-top: 20px;
     width: 240px;
 }
 
 fieldset {
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--main-border-color);
 }
 
+.select-weather-param {
+    margin-bottom: 10px;
+}
+
 .city-name, 
-.choice {
+.lat, 
+.lon, 
+.zip-code, 
+.country, 
+.select-weather-param,
+.button-submit-weather-params {
+    background-color: var(--main-header-footer-color);
     border: 1px solid var(--main-border-color);
     border-radius: 5px;
     padding: 5px;
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
 }
 
 .city-name:focus, 
@@ -110,24 +106,20 @@ fieldset {
 .lon:focus, 
 .zip-code:focus, 
 .country:focus, 
-.choice:focus {
+.select-weather-param:focus {
     outline: none;
-    background-color: var(--main-header-footer-color);;
+    background-color: white;
 }
 
 .lat, 
 .lon, 
 .zip-code, 
 .country {
-    border: 1px solid var(--main-border-color);
-    border-radius: 5px;
-    padding: 5px;
     width: 50%;
 }
 
 .coordinates, 
 .zip {
-    margin-bottom: 10px;
     width: 100%;
     font-size: 0;
 }
@@ -137,56 +129,43 @@ fieldset {
     display: block;
 }
 
-.extra-params,
 .humidity {
-    margin-top: 10px;
+    margin-top: 5px;
+}
+
+.extra-params {
+    margin: 10px 0 20px 0;
 }
 
 .hidden {
     display: none;
 }
 
-.humidity, 
-.wind {
-    margin-left: 20px;
-}
-
-.wind {
-    margin-bottom: 20px;
-}
-
 .error {
     border: 1px solid rgb(235, 9, 9);
 }
 
-.button-form {
-    border: 1px solid var(--main-border-color);
-    border-radius: 5px;
+.button-submit-weather-params {
     outline: none;
-    padding: 5px;
-    width: 100%;
-    text-decoration: none;
-    color: royalblue;
-    background-color: var(--main-button-form-color); 
+    color: royalblue; 
 }
 
-.button-form:hover {
+.button-submit-weather-params:hover {
     background-color: var(--main-button-hover-color);
 }
 
-.content {
-    flex-grow: 1;
-    align-items: stretch;
+.content { 
+    width: calc(1200px - 240px);
     padding: 20px;
 }
 
-.container {
+.weather-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.weather {
+.weather-item {
     display: inline-block;
     margin: 10px;
     border: 1px solid var(--main-border-color);
@@ -194,6 +173,7 @@ fieldset {
     width: 240px;
     background-color: var(--main-weather-color);
     position: relative;
+    overflow: hidden;
 }
 
 .weather-title {
@@ -201,10 +181,8 @@ fieldset {
 }
 
 .weather-info {
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
     padding: 5px;
-    background-color: var(--main-weather-info-color);
+    background-color: var(--main-button-hover-color);
 }
 
 .weather-time {
@@ -222,50 +200,90 @@ fieldset {
 }
 
 footer {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 5px;
+    padding: 10px 10px 5px 10px;
     border-top: 1px solid var(--main-border-color);
     font-size: 0.8em;
+    text-align: center;
+    position: relative;
+}
+
+.info-about-api,
+.copyright {
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+}
+
+.copyright {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.error-data {
+    color:rgb(235, 9, 9);
+    font-size: 2em;
+    text-align: center;
+    font-family: 'Avantgarde', 'TeX Gyre Adventor', 'URW Gothic L', sans-serif;
+    margin-top: 50px;
+}
+
+.open-sidebar {
+    transform: translateX(+100px);
+}
+
+.close-sidebar {
+    transform: translateX(-100px);
 }
 
 
-@media screen and (max-width: 400px) {
-    body {
-        font-size: 1.3em;
+@media screen and (max-width: 500px) {
+    body, header {
+        font-size: 0.9em;
     }
 
     header {
-        min-height: 100px;
-        
-    }
-
-    .icon {
-        position: relative;
-        top: 10px;
-        display: inline-block;
-        background: linear-gradient(rgb(165, 243, 218) 0%, rgb(165, 243, 218) 25%, rgb(213, 241, 232) 25%, rgb(213, 241, 232) 75% rgb(213, 241, 232) 75%, rgb(213, 241, 232) 100%);
-        width: 50px;
-        height: 50px;
-        margin-top: 10px;
+        position: static;
+        height: 100px;
     }
 
     .header-title {
-        display: inline-block;
-        margin-left: 10px;
+        display: block;
+        padding: 0;
+        margin: 0;
+        vertical-align: top;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
     }
 
     .days {
-        display: none;
-        min-width: 100%;
-        top: 70px;
-        left: 0px;
-        flex-wrap: wrap;
+        height: 50px;
+        width: 99%;
+        margin: 0 0.5% 0 0.5%;
+        line-height: 50px;
     }
 
     .days li {
-        flex-wrap: wrap;
-        min-width: 50%;
+        border: none;
+        width: 33%;
+        
     }
-    
+
+    .days li:hover {
+        background: var(--main-header-footer-color);
+    }
+
+    .main {
+        width: 100vw;
+        position: relative;
+    }
+
+    .sidebar {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        background-color: white;
+    }
 }
