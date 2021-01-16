@@ -1,5 +1,10 @@
 
-* {
+*,
+ul,
+li,
+h1,
+p, 
+label {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -11,17 +16,16 @@
     --main-button-hover-color: rgba(198, 250, 205, 0.616);
 }
 
-html {
+html,
+body {
     height: 100%;
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    font-family: 'monospace', 'Times New Roman', Times, serif;
-    font-size: 16px;
-    
+    font-size: 13px;
 }
 
 header, 
@@ -30,33 +34,32 @@ footer {
 }
 
 header {
-    display: flex;
-    height: 70px;
     border-bottom: 1px solid var(--main-border-color);
-    padding: 0 20px;
+}
+
+.header-title,
+.days {
+    cursor: pointer;
+    line-height: 70px;
+    vertical-align: middle;
+    text-align: center; 
 }
 
 .header-title {
-    display: inline-block;
-    line-height: 70px;
-    vertical-align: middle;
-    cursor: pointer;
-}
-
-.days {
-    display: flex;
-    line-height: 70px;
-    padding: 0 20px;
+    margin: 0 10px;
 }
 
 .days li {
     list-style-type: none;
-    width: 150px;
-    vertical-align: middle;
-    text-align: center;
+    padding: 0 40px;
+    min-width: 100px;
     font-size: 1.3em;
-    cursor: pointer;
     border-right: 1px solid var(--main-border-color);
+    color: royalblue;
+}
+
+.days li:first-child {
+    border-left: 1px solid var(--main-border-color);
 }
 
 .days li:hover,
@@ -64,28 +67,31 @@ header {
     background-color: var(--main-weather-color);
 }
 
-main {
-    display: flex;
-    flex-grow: 1;
-    width: 1200px;
+main,
+.sidebar {
     margin: 0 auto;
 }
 
+main {
+    max-width: 1100px;
+    flex: 1 0 auto;
+}
+
 .sidebar {
-    padding-top: 20px;
-    width: 240px;
+    padding-top: 10px;
+    max-width: 280px;
+    min-width: 200px;
 }
 
 fieldset {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+    font-size: 1.1em;
+    padding: 0 10px 10px 10px;
     border-radius: 5px;
     border: 1px solid var(--main-border-color);
 }
 
-.select-weather-param {
-    margin-bottom: 10px;
+.select-weather-by-param {
+    margin-bottom: 5px;
 }
 
 .city-name, 
@@ -93,12 +99,13 @@ fieldset {
 .lon, 
 .zip-code, 
 .country, 
-.select-weather-param,
-.button-submit-weather-params {
+.select-weather-by-param,
+.submit-weather-params-button,
+.clear-weather-params-button {
     background-color: var(--main-header-footer-color);
     border: 1px solid var(--main-border-color);
-    border-radius: 5px;
     padding: 5px;
+    width: 100%;
 }
 
 .city-name:focus, 
@@ -106,22 +113,9 @@ fieldset {
 .lon:focus, 
 .zip-code:focus, 
 .country:focus, 
-.select-weather-param:focus {
+.select-weather-by-param:focus {
     outline: none;
     background-color: white;
-}
-
-.lat, 
-.lon, 
-.zip-code, 
-.country {
-    width: 50%;
-}
-
-.coordinates, 
-.zip {
-    width: 100%;
-    font-size: 0;
 }
 
 .humidity, 
@@ -134,7 +128,7 @@ fieldset {
 }
 
 .extra-params {
-    margin: 10px 0 20px 0;
+    margin: 10px 0;
 }
 
 .hidden {
@@ -145,31 +139,37 @@ fieldset {
     border: 1px solid rgb(235, 9, 9);
 }
 
-.button-submit-weather-params {
+.submit-weather-params-button,
+.clear-weather-params-button {
     outline: none;
     color: royalblue; 
 }
 
-.button-submit-weather-params:hover {
+.clear-weather-params-button:hover,
+.submit-weather-params-button:hover {
     background-color: var(--main-button-hover-color);
 }
 
+.clear-weather-params-button { 
+    margin-top: 5px;
+}
+
 .content { 
-    width: calc(1200px - 240px);
-    padding: 20px;
+    padding: 5px;
+    max-width: 930px;
 }
 
 .weather-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 .weather-item {
     display: inline-block;
     margin: 10px;
     border: 1px solid var(--main-border-color);
-    border-radius: 10px;
+    border-radius: 2px;
     width: 240px;
     background-color: var(--main-weather-color);
     position: relative;
@@ -178,11 +178,13 @@ fieldset {
 
 .weather-title {
     padding: 10px;
+    font-size: 1.8em;
 }
 
 .weather-info {
     padding: 5px;
     background-color: var(--main-button-hover-color);
+    font-size: 1.1em;
 }
 
 .weather-time {
@@ -200,24 +202,21 @@ fieldset {
 }
 
 footer {
-    padding: 10px 10px 5px 10px;
+    flex-shrink: 0;
+    padding: 10px;
     border-top: 1px solid var(--main-border-color);
-    font-size: 0.8em;
-    text-align: center;
-    position: relative;
+    font-size: 0.9em;
 }
 
 .info-about-api,
 .copyright {
     display: inline-block;
-    width: 200px;
-    text-align: center;
+    margin: 0 5px;
 }
 
-.copyright {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+.info-about-api {
+    width: 300px;
+    text-align: center;
 }
 
 .error-data {
@@ -228,62 +227,34 @@ footer {
     margin-top: 50px;
 }
 
+@media screen and (max-width: 800px) {
+    .weather-item {
+        margin: 5px auto;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    main {
+        max-width: 900px;
+    }
+}
+
 .open-sidebar {
-    transform: translateX(+100px);
+    transform: translateX(-400px) translateX(400px);
+    transition: 2s;
 }
 
 .close-sidebar {
-    transform: translateX(-100px);
+    transform: translateX(-400px);
+    transition: 2s;
 }
 
+.run-content-at-open-sidebar {
+    
+    transition: 2s;
+}
 
-@media screen and (max-width: 500px) {
-    body, header {
-        font-size: 0.9em;
-    }
-
-    header {
-        position: static;
-        height: 100px;
-    }
-
-    .header-title {
-        display: block;
-        padding: 0;
-        margin: 0;
-        vertical-align: top;
-        text-align: center;
-        height: 50px;
-        line-height: 50px;
-    }
-
-    .days {
-        height: 50px;
-        width: 99%;
-        margin: 0 0.5% 0 0.5%;
-        line-height: 50px;
-    }
-
-    .days li {
-        border: none;
-        width: 33%;
-        
-    }
-
-    .days li:hover {
-        background: var(--main-header-footer-color);
-    }
-
-    .main {
-        width: 100vw;
-        position: relative;
-    }
-
-    .sidebar {
-        position: absolute;
-        width: 100vw;
-        height: 100vh;
-        z-index: 1000;
-        background-color: white;
-    }
+.run-content-at-close-sidebar {
+    
+    transition: 2s;
 }
