@@ -11,61 +11,64 @@
     </head>
 
     <body>
-
-        <header class="row">
-            <div class="col-md-auto">
-                <h1 class="header-title">Weather-app</h1>
-            </div>
-            <div class="col-md-auto">
-                <ul class="days row">
-                    <li class="col-md-auto" id="today">Today</li>
-                    <li class="col-md-auto" id="tomorrow">Tommorow</li>
-                    <li class="col-md-auto" id="week">5 days</li>
-                </ul>
-            </div>
-        </header>
-
-        <main>
-            <div class="row">
-                <div class="col-md-3">
-                    <aside class="sidebar">
-                        <form name="weather-filters" class="weather-filters" action="#">
-                            <fieldset>
-                                <legend>Find the weather</legend>
-                                <select name="select-weather-by-param" class="select-weather-by-param">
-                                    <option value="city" selected>by the city</option>
-                                    <option value="coords">by coordinates</option>
-                                    <option value="zip">by index</option>
-                                </select>
-                                <input name="city-name" class="city-name" type="text" placeholder="city">
-                                <div class="coordinates">
-                                    <input name="lat" class="lat" type="number" placeholder="latitude">
-                                    <input name="lon" class="lon" type="number" placeholder="longitude">
-                                </div>
-                                <div class="zip">
-                                    <input name="country" class="country" type="text" placeholder="country (US)">
-                                    <input name="zip-code" class="zip-code" type="number" placeholder="index">
-                                </div>  
-                                <div class="extra-params"> additionally display:
-                                    <label class="humidity"><input name="humidity" type="checkbox"> humidity</label>
-                                    <label class="wind"><input name="wind" type="checkbox"> wind speed</label>
-                                </div>
-                                <button type="submit" class="submit-weather-params-button">apply</button>
-                                <button type="submit" class="clear-weather-params-button">clear form</button>
-                            </fieldset>
-                        </form>
-                    </aside>
+        <div class="container-fluid">
+            <header class="row">
+                <div class="col-xl-3 col-md-auto align-self-center">
+                    <h1 class="header-title">Weather-app</h1>
                 </div>
-        
-                <div class="col-md-9">
-                    <div class="content"></div>
-                </div> 
-            </div>
-        </main>
-        
-        <footer class="row justify-content-around">
-            <span class="col-auto align-self-center copyright">&copy; 2020 Weather-app &reg; All rights reserved.</span>
-            <span class="col-auto align-self-center info-about-api">Data provided by the service <a href="https://openweathermap.org/api">openweathermap.org/api</a></span>
-        </footer>
+                <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 col-12">
+                    <ul class="days row">
+                        <li class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12" id="today">Today</li>
+                        <li class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12" id="tomorrow">Tommorow</li>
+                        <li class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12" id="week">5 days</li>
+                    </ul>
+                </div>
+            </header>
+        </div>
+
+        <div class="flex-fill container-fluid">
+            <main class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
+                        <aside class="sidebar row justify-content-center">
+                            <form name="weather-filters" class="weather-filters col-xl-11 col-lg-12 col-md-11 col-sm-7 col-8" action="#">
+                                <fieldset>
+                                    <legend>Find the weather</legend>
+                                    <select name="select-weather-by-param" class="select-weather-by-param">
+                                        <option value="city" selected>by the city</option>
+                                        <option value="coords">by coordinates</option>
+                                        <option value="zip">by postal code</option>
+                                    </select>
+                                    <input name="city-name" class="city-name" type="text" placeholder="city">
+                                    <div class="coordinates">
+                                        <input name="lat" class="lat" type="number" placeholder="latitude">
+                                        <input name="lon" class="lon" type="number" placeholder="longitude">
+                                    </div>
+                                    <div class="zip">
+                                        <input name="country" class="country" type="text" placeholder="country (US)">
+                                        <input name="zip-code" class="zip-code" type="number" placeholder="index">
+                                    </div>  
+                                    <div class="extra-params"> additionally display:
+                                        <label class="humidity"><input name="humidity" type="checkbox"> humidity</label>
+                                        <label class="wind"><input name="wind" type="checkbox"> wind speed</label>
+                                    </div>
+                                    <button type="submit" class="submit-weather-params-button">apply</button>
+                                    <button type="submit" class="clear-weather-params-button">clear form</button>
+                                </fieldset>
+                            </form>
+                        </aside>
+                    </div>
+            
+                    <div class="col-xl-9 col-lg-9 col-md-8 col-sm-10 col-10">
+                        <div class="content"></div>
+                    </div> 
+                </div>
+            </main>
+            
+            <footer class="row align-items-end justify-content-around">
+                <span class="col-auto align-self-center copyright">&copy; 2020 Weather-app &reg; All rights reserved.</span>
+                <span class="col-auto align-self-center info-about-api">Data provided by the service <a href="https://openweathermap.org/api">openweathermap.org/api</a></span>
+            </footer>
+        </div>
     </body>
 </html>

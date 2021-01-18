@@ -25,7 +25,7 @@ document.querySelector('.clear-weather-params-button').addEventListener('click',
     } = document.forms['weather-filters'];
 
         selectParams.value = 'city';
-        city.value = '';
+        city.value = 'Minsk';
         lat.value = '';
         lon.value = '';
         country.value = '';
@@ -36,39 +36,14 @@ document.querySelector('.clear-weather-params-button').addEventListener('click',
         showParamsWeatherBySelect();
 });
 
-document.querySelector('.header-title').addEventListener('click', () => {
-    if (document.documentElement.clientWidth < 750) {
-        const sidebar = document.querySelector('.sidebar');
-        const weatherFilters = document.forms['weather-filters'];
-        const content = document.querySelector('.content');
-        if (sidebar.hidden) {
-            sidebar.hidden = !sidebar.hidden;
-            setTimeout(() => {
-                weatherFilters.classList.remove('close-sidebar');
-                weatherFilters.classList.add('open-sidebar');
-                content.classList.remove('run-content-at-close-sidebar');
-                content.classList.add('run-content-at-open-sidebar');
-            }, 200);
-        } else {
-            weatherFilters.classList.add('close-sidebar');
-            weatherFilters.classList.remove('open-sidebar');
-            content.classList.add('run-content-at-close-sidebar');
-            content.classList.remove('run-content-at-open-sidebar');
-            setTimeout(() => {
-                sidebar.hidden = !sidebar.hidden;
-            }, 1000);
-        }
-    }
-});
-
 document.querySelector('.select-weather-by-param').addEventListener('change', () => showParamsWeatherBySelect());
 
-document.querySelector('.city-name').oninput = () => {
+document.querySelector('.city-name').onchange = () => {
     const city = document.querySelector('.city-name');
     removeClass('error', city);
 };
 
-document.querySelector('.lat').oninput = document.querySelector('.lon').oninput = () => {
+document.querySelector('.lat').onchange = document.querySelector('.lon').onchange = () => {
     const {
         lat, 
         lon
@@ -76,7 +51,7 @@ document.querySelector('.lat').oninput = document.querySelector('.lon').oninput 
     removeClass('error', lat, lon);
 };
 
-document.querySelector('.country').oninput = document.querySelector('.zip-code').oninput = () => {
+document.querySelector('.country').onchange = document.querySelector('.zip-code').onchange = () => {
     const {
         country, 
         'zip-code': zipCode
@@ -113,7 +88,7 @@ function initialDataRecording(localData) {
         }
         humidity.checked = localData.humidity;
         wind.checked = localData.wind;
-    }
+    };
 
     selectParams.value = localData ? localData.selectParams : 'city';
     city.value = localData ? localData.city : 'Minsk';
@@ -143,11 +118,11 @@ function returnDataForm() {
         country: country.value,
         zipCode: zipCode.value,
         selectParams: selectParams.value,
-        
         humidity: humidity.checked,
         wind: wind.checked,
         days: document.querySelector('.days .active').id
     }
+
     return dataForm;
 };
 
@@ -177,38 +152,39 @@ function addHtmlContentToPage(responseData) {
         
         if ((selectDay == 'week') ? true : currentDate.getDate() === date.getDate()) {
             itemWeather +=
-                `<div class="weather-item">
-                    <p class="weather-time">${time[0]}:${time[1]}</p>
-                    <p class="weather-forecast">${Math.round(oneDayData.main.temp - 273) + '&deg;'}</p>
-                    <p class="weather-icon"><img src="https://openweathermap.org/img/wn/${oneDayData.weather[0]['icon']}@2x.png"></p>
-                    <div class="weather-info">
-                        <p class="weather-desc">Outdoors ${oneDayData.weather[0]['description']}</p>
-                        <p class="weather-humidity">${humidity.checked ? `Humidity ${oneDayData.main.humidity}%` : ''}</p>
-                        <p class="weather-wind">${wind.checked ? `Wind speed: ${oneDayData.wind.speed} km/h` : ''}</p>
+                `<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-11">
+                    <div class="weather-item">
+                        <p class="weather-time">${time[0]}:${time[1]}</p>
+                        <p class="weather-forecast">${Math.round(oneDayData.main.temp - 273) + '&deg;'}</p>
+                        <p class="weather-icon"><img src="https://openweathermap.org/img/wn/${oneDayData.weather[0]['icon']}@2x.png"></p>
+                        <div class="weather-info">
+                            <p class="weather-desc">Outdoors ${oneDayData.weather[0]['description']}</p>
+                            <p class="weather-humidity">${humidity.checked ? `Humidity ${oneDayData.main.humidity}%` : ''}</p>
+                            <p class="weather-wind">${wind.checked ? `Wind speed: ${oneDayData.wind.speed} km/h` : ''}</p>
+                        </div>
                     </div>
                 </div>`;
-        }
+        };
+
         if (time[0] == '21') {
             const formatDate = new Intl.DateTimeFormat('en', options).format(date);
             text += itemWeather ?
                 `<div class="one-day">
                     <h2 class="weather-title">${responseData.city.name}: ${formatDate}</h2>
-                    <div class="weather-container">${itemWeather}</div></div>`
+                    <div class="weather-container row justify-content-start">${itemWeather}</div></div>`
                 : '';
             itemWeather = '';
-        }
+        };
+
         return text;
     }, '');
 };
 
 function addWeatherInfoInApp(url){
-    fetch(url).then(function(resp) {
-        return resp.json() 
-    })
-    .then(function(data) {
-        addHtmlContentToPage(data);
-    })
-    .catch(function (e) {
+    fetch(url)
+    .then((resp) => resp.json())
+    .then((data) => addHtmlContentToPage(data))
+    .catch((e) => {
         console.log(e);
         const { 
             lat, 
@@ -231,7 +207,7 @@ function addWeatherInfoInApp(url){
                 break;
         }
         document.querySelector('.content').innerHTML = 
-            `<div class="error-data">Данных по Вашему запросу не найдено, проверьте правильность введенных данных.</div>`;
+            `<div class="error-data">No data was found for your request, please check the correctness of the entered data.</div>`;
     });
 };
 

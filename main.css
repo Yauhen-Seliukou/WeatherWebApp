@@ -1,9 +1,7 @@
 
-*,
+* ,
+p,
 ul,
-li,
-h1,
-p, 
 label {
     padding: 0;
     margin: 0;
@@ -18,14 +16,9 @@ label {
 
 html,
 body {
-    height: 100%;
     font-family: 'Nobile', Helvetica, Arial, sans-serif;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
     font-size: 13px;
+    height: 100%;
 }
 
 header, 
@@ -35,27 +28,30 @@ footer {
 
 header {
     border-bottom: 1px solid var(--main-border-color);
+    min-height: 70px;
 }
 
 .header-title,
 .days {
+    height: 100%;
+    text-align: center;
+}
+
+.days {
     cursor: pointer;
-    line-height: 70px;
-    vertical-align: middle;
-    text-align: center; 
 }
 
 .header-title {
-    margin: 0 10px;
+    cursor: default;
 }
 
 .days li {
     list-style-type: none;
-    padding: 0 40px;
-    min-width: 100px;
     font-size: 1.3em;
     border-right: 1px solid var(--main-border-color);
     color: royalblue;
+    line-height: 65px;
+    vertical-align: middle;
 }
 
 .days li:first-child {
@@ -67,25 +63,13 @@ header {
     background-color: var(--main-weather-color);
 }
 
-main,
-.sidebar {
-    margin: 0 auto;
-}
-
-main {
-    max-width: 1100px;
-    flex: 1 0 auto;
-}
-
 .sidebar {
     padding-top: 10px;
-    max-width: 280px;
-    min-width: 200px;
 }
 
 fieldset {
     font-size: 1.1em;
-    padding: 0 10px 10px 10px;
+    padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--main-border-color);
 }
@@ -136,7 +120,7 @@ fieldset {
 }
 
 .error {
-    border: 1px solid rgb(235, 9, 9);
+    border: 1px solid rgb(199, 67, 67);
 }
 
 .submit-weather-params-button,
@@ -154,26 +138,14 @@ fieldset {
     margin-top: 5px;
 }
 
-.content { 
-    padding: 5px;
-    max-width: 930px;
-}
-
-.weather-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
 .weather-item {
-    display: inline-block;
-    margin: 10px;
     border: 1px solid var(--main-border-color);
     border-radius: 2px;
-    width: 240px;
     background-color: var(--main-weather-color);
     position: relative;
     overflow: hidden;
+    height: 95%;
+    width: 100%;
 }
 
 .weather-title {
@@ -182,9 +154,10 @@ fieldset {
 }
 
 .weather-info {
-    padding: 5px;
     background-color: var(--main-button-hover-color);
     font-size: 1.1em;
+    height: 100%;
+    padding: 10px;
 }
 
 .weather-time {
@@ -202,7 +175,6 @@ fieldset {
 }
 
 footer {
-    flex-shrink: 0;
     padding: 10px;
     border-top: 1px solid var(--main-border-color);
     font-size: 0.9em;
@@ -220,41 +192,19 @@ footer {
 }
 
 .error-data {
-    color:rgb(235, 9, 9);
+    color:rgb(56, 19, 19);
     font-size: 2em;
     text-align: center;
     font-family: 'Avantgarde', 'TeX Gyre Adventor', 'URW Gothic L', sans-serif;
     margin-top: 50px;
 }
 
-@media screen and (max-width: 800px) {
-    .weather-item {
-        margin: 5px auto;
-    }
+.flex-fill {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 70px);
 }
 
-@media screen and (max-width: 1024px) {
-    main {
-        max-width: 900px;
-    }
-}
-
-.open-sidebar {
-    transform: translateX(-400px) translateX(400px);
-    transition: 2s;
-}
-
-.close-sidebar {
-    transform: translateX(-400px);
-    transition: 2s;
-}
-
-.run-content-at-open-sidebar {
-    
-    transition: 2s;
-}
-
-.run-content-at-close-sidebar {
-    
-    transition: 2s;
+main {
+    flex-grow: 1;
 }
